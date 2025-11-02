@@ -2,10 +2,8 @@ Here’s your content reformatted into clean, production-ready `README.md` Markd
 
 ---
 
-````markdown
 # 🧱 Static-Site-Server → Flask Deployment
-### End-to-End Setup and Run Guide  
-**Author:** Jordan Schilling  
+### End-to-End Setup and Run Guide    
 **Environment:** Ubuntu 25.04 (DigitalOcean Droplet)  
 **Stack:** Flask • Gunicorn • Nginx • systemd • rsync • WSL2  
 
