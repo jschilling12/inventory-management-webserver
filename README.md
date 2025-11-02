@@ -1,92 +1,58 @@
-# Corollary Warehousing System
+# 🧱 Static-Site-Server → Flask Deployment  
+### End-to-End Setup and Run Guide    
+**Environment:** Ubuntu 25.04 (DigitalOcean Droplet)  
+**Stack:** Flask • Gunicorn • Nginx • systemd • rsync • WSL2
 
-- Author: Jordan Schilling
-- Student ID: 012678863
-- Python Version: 3.12
+https://roadmap.sh/projects/static-site-server
 
 ---
 
-## Project Overview
+## 📖 Overview
 
-Corollary Warehousing is a comprehensive inventory and order management system designed for scalability, real-time analytics, and warehouse manipulation. 
-Built using Python, SQLite, and ADS (Abstract Data Structures) like Queues and Hash Tables, the system supports customers placing orders and employees managing inventory.
-Included is backend support and warehouse space tracking.
+This guide provides a **complete walkthrough** to set up, deploy, and run the connected Flask web application — whether you already have your server configured or are starting fresh.
 
+You’ll learn how to:
 
-## Function Descriptions
+- Provision and connect to a remote Ubuntu server  
+- Configure SSH access securely  
+- Deploy your codebase with `rsync`  
+- Serve your Flask app with **Gunicorn + Nginx**  
+- Automate everything with a `deploy.sh` script  
 
+By the end, you’ll have a **production-grade setup** running at `http://<your-server-ip>/` or your custom domain.
 
-### HashTable (Inventory, Quantities)
--- Purpose:
-- The HashTable class manages product <> quantities using an in-memory hash map with defaultdict(int). 
-- It supports setting, retrieving, incrementing, and decrementing stock levels.
+---
 
--- Steps to Run:
-- The run function is within the Inventory class and automatically updated when inventory is added, restocked, or queried.
+## ⚙️ 1. Prerequisites
 
--- Error Handling & Edge Cases:
-- Missing keys return 0.
-- Assumes keys are product names in lowercase to ensure case-insensitive matching.
+### 🖥️ Local Development Environment
 
+You’ll need:
+- **Windows 10/11** with **WSL2 (Ubuntu)**  
+- Installed tools:
+  - `rsync`
+  - `ssh`
+  - `bash`
+- A working Flask codebase (with `app.py`, `templates/`, and `static/`)
+- SSH key pair:
+  - `SSHKey1` (private) example
+  - `SSHKey1.pub` (public) example
 
-### Inventory (Product, Product ID, and Quantity Tracking)
--- Purpose:
-- The Inventory class handles the creation of products <> product IDs and tracking of quantities, syncing with the products table in SQLite. 
-- It manages
-    - Loading products to/from the DB
-    - Adding new items
-    - Restocking
-    - Capacity checks based on warehouse limits
+---
 
--- Steps to Run:
-- Triggered in main.py via employees
-    - Option 1: Add or restock product
-    - Option 2: View inventory
+## ☁️ 2. Server Setup (For New Users)
 
--- Error Handling & Edge Cases:
-- Validates against warehouse max_capacity before restocking.
-- Inventory can only be a positive integer.
-- Prevents adding a product if warehouse space is full.
-- Converts all product names to lowercase to avoid duplication.
-- Inventory updates are committed immediately.
+If you don’t yet have a server:
 
+1. **Create a new Droplet** on [DigitalOcean](https://digitalocean.com) using Ubuntu 25.04.  
+2. **Get your IP address** (e.g., `139.197.39.111`) and log in:
 
-### Queue (Order Staging System)
--- Purpose:
-- The Queue class manages unprocessed customer orders in memory using a dictionary.
-    - Adds new orders
-    - Retrieves product info by order ID
-    - Updates order status in SQLite to 'queued'
+   ```bash
+   ssh root@<linux ip>
 
--- Steps to Run:
-- Orders are staged in this queue when a customer places an order. Managed automatically in main.py.
+   ## 🧩 Credits / Sources
 
--- Error Handling & Edge Cases:
-- Duplicate order IDs are handled safely (no overwrites).
-- Missing order IDs return None.
-- SQLite updates are wrapped with commits for persistence.
+    
+This project incorporates UI templates from the open-source repository [gavindsouza/inventory-management-system](https://github.com/gavindsouza/inventory-management-system/tree/main/inventory/templates).  
+Special thanks to @gavindsouza for the foundation provided by those templates and some inspiration from the [app.py starter kit](https://github.com/pallets/flask/tree/main/examples/tutorial) for Flask.
 
-
-### ProcessQueue (Order Fulfillment Pipeline)
--- Purpose:
-- The ProcessQueue handles order execution using a deque (FIFO).
-    - Loads pending orders from the DB on startup
-    - Queues new orders as they come in
-    - Processes and updates orders as 'processed'
-
--- Steps to Run:
-- Used in main.py
-    - Orders are enqueued upon customer purchase.
-    - Processed via employee menu option 3.
-
--- Error Handling & Edge Cases:
-- Only processes if the queue is non-empty.
-- Ensures database is updated with order status on completion.
-- Handles an empty queue by returning False.
-
-
-## How to Run Each Function
--- Initialize the System:
-
-   - python main.py
-   - navigate through the prompts
