@@ -1,4 +1,3 @@
-Here’s your content reformatted into clean, production-ready `README.md` Markdown style — with proper code fencing, headings, and indentation preserved for GitHub rendering:
 
 ---
 
@@ -50,7 +49,7 @@ If you don’t yet have a server:
 1. **Create a new Droplet** on [DigitalOcean](https://digitalocean.com) using Ubuntu 25.04.  
 2. **Get your IP address** (e.g., `138.197.38.114`) and log in:
 
-   ```bash
+```bash
    ssh root@138.197.38.114
 ````
 
@@ -58,14 +57,14 @@ If you don’t yet have a server:
 
    ```bash
    apt update && apt install -y nginx openssh-server python3-venv python3-pip rsync ufw
-   ```
+   ````
 
 4. **Enable services:**
 
    ```bash
    systemctl enable --now ssh
    systemctl enable --now nginx
-   ```
+   ````
 
 5. **Set up firewall:**
 
@@ -73,13 +72,13 @@ If you don’t yet have a server:
    ufw allow OpenSSH
    ufw allow 'Nginx Full'
    ufw enable
-   ```
+   ````
 
 6. **Create your project directory:**
 
    ```bash
    mkdir -p /var/www/static-site-server
-   ```
+   ````
 
 ---
 
@@ -89,9 +88,9 @@ Edit your SSH configuration file at:
 
 **Windows path:**
 
-```
+````
 C:\Users\<youruser>\.ssh\config
-```
+````
 
 **Content:**
 
@@ -101,13 +100,13 @@ Host myserver
     User root
     IdentityFile C:/Users/jorda/SSHKey1_Linux
     IdentitiesOnly yes
-```
+````
 
 Then test your connection:
 
 ```bash
 ssh myserver
-```
+````
 
 ✅ You should now connect directly as root.
 
@@ -119,7 +118,7 @@ SSH into your server:
 
 ```bash
 ssh myserver
-```
+````
 
 Then set up your Flask app:
 
@@ -128,14 +127,14 @@ cd /var/www/static-site-server
 python3 -m venv .venv
 source .venv/bin/activate
 pip install flask gunicorn
-```
+````
 
 Test your app manually:
 
 ```bash
 gunicorn -w 2 -b 127.0.0.1:8000 app:app
 curl -I http://127.0.0.1:8000/
-```
+````
 
 ✅ If you see `HTTP/1.1 200 OK`, your Flask app is running.
 
@@ -166,7 +165,7 @@ RestartSec=3
 [Install]
 WantedBy=multi-user.target
 UNIT
-```
+````
 
 Enable and verify:
 
@@ -174,7 +173,7 @@ Enable and verify:
 sudo systemctl daemon-reload
 sudo systemctl enable --now gunicorn
 sudo systemctl status gunicorn
-```
+````
 
 ✅ If you see “active (running)”, you’re good.
 
@@ -202,7 +201,7 @@ server {
     }
 }
 NGINX
-```
+````
 
 Activate it:
 
@@ -210,7 +209,7 @@ Activate it:
 sudo ln -sf /etc/nginx/sites-available/static-site-server /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t && sudo systemctl reload nginx
-```
+````
 
 ✅ Your Flask app is now served at:
 👉 [http://138.197.38.114](http://138.197.38.114)
@@ -240,19 +239,19 @@ rsync -avzP \
 ssh -i $KEY $HOST "systemctl restart gunicorn && systemctl reload nginx"
 
 echo "✅ Deployment complete!"
-```
+````
 
 Make it executable:
 
 ```bash
 chmod +x deploy.sh
-```
+````
 
 Deploy your code:
 
 ```bash
 ./deploy.sh
-```
+````
 
 ✅ Automatically syncs code and restarts the app.
 
@@ -271,7 +270,7 @@ node_modules/
 *.log
 dist/
 build/
-```
+````
 
 ---
 
@@ -287,7 +286,7 @@ If not, check logs:
 ```bash
 sudo journalctl -u gunicorn --no-pager -n 20
 sudo tail -n 20 /var/log/nginx/error.log
-```
+````
 
 ---
 
@@ -297,7 +296,7 @@ Once configured, every future update is one line:
 
 ```bash
 ./deploy.sh
-```
+````
 
 This will:
 
@@ -328,7 +327,7 @@ source .venv/bin/activate
 flask run
 # or
 gunicorn -w 2 -b 127.0.0.1:8000 app:app
-```
+````
 
 Then open:
 👉 [http://127.0.0.1:8000](http://127.0.0.1:8000)
@@ -342,13 +341,13 @@ Once live, secure with HTTPS:
 ```bash
 sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d yourdomain.com
-```
+````
 
 Auto-renew every 90 days:
 
 ```bash
 sudo systemctl enable certbot.timer
-```
+````
 
 ---
 
@@ -370,14 +369,14 @@ Create a `requirements.txt`:
 
 ```bash
 pip freeze > requirements.txt
-```
+````
 
 Backup configs before editing:
 
 ```bash
 /etc/nginx/sites-available/
 /etc/systemd/system/
-```
+````
 
 For custom domains → update `server_name` in Nginx.
 
@@ -395,7 +394,7 @@ sudo systemctl reload nginx
 
 # Check App
 curl -I http://138.197.38.114
-```
+````
 
 ---
 
@@ -422,13 +421,6 @@ You now have:
 **Maintainer:** Jordan Schilling
 **Repository Purpose:** End-to-end demonstration of static → Flask deployment using modern DevOps tooling.
 **Server Path:** `/var/www/static-site-server`
-
-```
-
----
-
-Would you like me to export this as a ready-to-download `README.md` file next (with UTF-8 formatting and emoji preserved)?
-```
 
 
 ## 🧩 Credits / Sources
