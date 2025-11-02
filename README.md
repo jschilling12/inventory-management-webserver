@@ -50,9 +50,9 @@ If you don’t yet have a server:
    ```bash
    ssh root@<linux ip>
 
-   ## 🧩 Credits / Sources
 
-    
+## 🧩 Credits / Sources
+
 This project incorporates UI templates from the open-source repository [gavindsouza/inventory-management-system](https://github.com/gavindsouza/inventory-management-system/tree/main/inventory/templates).  
 Special thanks to @gavindsouza for the foundation provided by those templates and some inspiration from the [app.py starter kit](https://github.com/pallets/flask/tree/main/examples/tutorial) for Flask.
 
